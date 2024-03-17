@@ -15,6 +15,11 @@
 #include "third_party/blink/renderer/core/html/html_collection.h"
 #include "third_party/blink/renderer/core/html/html_document.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
 namespace blink {
 
 v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
@@ -102,7 +107,32 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
   bool has_named_item = doc->HasNamedItem(name);
   bool has_id_item = doc->HasElementWithId(name);
 
+  /**
+   * SafeLookup
+   * 
+   * For context logging
+  */
+  ScriptState* script_state = ToScriptState(To<LocalDOMWindow>(window),
+                                            DOMWrapperWorld::Current(isolate));
+
+  ExecutionContext* execution_context = ExecutionContext::From(script_state);
+
+
   if (!has_named_item && !has_id_item) {
+    /**
+     * SafeLookup
+     * 
+     * <WIN-TYPE-1>, <DOC-TYPE-1>
+    */
+    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-1> Catched: " + String(name.Utf8().c_str());
+
+      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+        mojom::blink::ConsoleMessageSource::kJavaScript,
+        mojom::blink::ConsoleMessageLevel::kInfo, 
+        message,
+        CaptureSourceLocation(execution_context)));
+    }
     return v8::Local<v8::Value>();
   }
   window->ReportCoopAccess("named");
@@ -114,10 +144,26 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
   // collection of elements) in this window, and that this window is local. Wrap
   // the return value in this window's relevant context, with the current
   // wrapper world.
-  ScriptState* script_state = ToScriptState(To<LocalDOMWindow>(window),
-                                            DOMWrapperWorld::Current(isolate));
+  // ScriptState* script_state = ToScriptState(To<LocalDOMWindow>(window),
+  //                                           DOMWrapperWorld::Current(isolate));
   if (!has_named_item && has_id_item &&
       !doc->ContainsMultipleElementsWithId(name)) {
+    /**
+     * SafeLookup
+     * 
+     * <WIN-TYPE-2>, <DOC-TYPE-2>
+     *
+    */
+   if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
+
+      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+        mojom::blink::ConsoleMessageSource::kJavaScript,
+        mojom::blink::ConsoleMessageLevel::kInfo, 
+        message,
+        CaptureSourceLocation(execution_context)));
+   }
+    // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (ID) Catched:" << name.Utf8() <<std::endl;
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);
     return ToV8Traits<Element>::ToV8(script_state, doc->getElementById(name))
         .ToLocalChecked();
@@ -125,6 +171,23 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
 
   HTMLCollection* items = doc->WindowNamedItems(name);
   if (!items->IsEmpty()) {
+    /**
+     * SafeLookup
+     * 
+     * <WIN-TYPE-2>, <DOC-TYPE-2>
+     * 
+     * TODO: should log the secondary clobberable site (clobber name) here
+    */
+    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
+
+      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+        mojom::blink::ConsoleMessageSource::kJavaScript,
+        mojom::blink::ConsoleMessageLevel::kInfo, 
+        message,
+        CaptureSourceLocation(execution_context)));
+    }
+    // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (Name) Catched:" << name.Utf8() <<std::endl;
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);
 
     // TODO(esprehn): Firefox doesn't return an HTMLCollection here if there's

@@ -69,6 +69,11 @@
 #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
 namespace {
 
 static const blink::WebStyleSheetKey GenerateStyleSheetKey() {
@@ -221,6 +226,19 @@ WebURL WebDocument::CompleteURL(const WebString& partial_url) const {
 }
 
 WebElement WebDocument::GetElementById(const WebString& id) const {
+  /**
+   * chrome-clobber
+  */
+  ExecutionContext* execution_context = ConstUnwrap<Document>()->GetExecutionContext();
+  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+    String message = "[+] SafeLookup: <API-TYPE-1> Catched: " + String(id.Utf8().c_str());
+
+    execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+      mojom::blink::ConsoleMessageSource::kJavaScript,
+      mojom::blink::ConsoleMessageLevel::kInfo, 
+      message,
+      CaptureSourceLocation(execution_context)));
+  }
   return WebElement(ConstUnwrap<Document>()->getElementById(id));
 }
 

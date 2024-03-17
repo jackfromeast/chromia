@@ -16,6 +16,10 @@
 
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
 namespace blink {
 
 ConsoleMessage::ConsoleMessage(mojom::blink::ConsoleMessageSource source,
@@ -78,6 +82,26 @@ ConsoleMessage::~ConsoleMessage() = default;
 
 SourceLocation* ConsoleMessage::Location() const {
   return location_.get();
+}
+
+void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String message){
+  context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+    mojom::blink::ConsoleMessageSource::kJavaScript,
+    mojom::blink::ConsoleMessageLevel::kInfo, 
+    message,
+    CaptureSourceLocation(context)));
+}
+
+// Helper method to log chrome-clobber status.
+void ConsoleMessage::ConsoleLogDOMAccessType3(ExecutionContext* context, HTMLCollection* collection, const String& collectionName) {
+    if (!RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+        return;
+    }
+
+    String status = collection->IsEmpty() ? "Catched Undefined" : "Catched Non-Undefined";
+    String message = "[+] SafeLookup: <API-TYPE-3> <" + collectionName + "> " + status;
+
+    ConsoleMessage::ConsoleLogDOMAccess(context, message);
 }
 
 const String& ConsoleMessage::RequestIdentifier() const {

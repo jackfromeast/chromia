@@ -372,6 +372,9 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+
 #ifndef NDEBUG
 using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
 static WeakDocumentSet& LiveDocumentSet();
@@ -7320,36 +7323,91 @@ bool Document::HasSVGRootNode() const {
 }
 
 HTMLCollection* Document::images() {
-  return EnsureCachedCollection<HTMLCollection>(kDocImages);
+  auto* images = EnsureCachedCollection<HTMLCollection>(kDocImages);
+  ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+  ConsoleMessage::ConsoleLogDOMAccessType3(context, images, "images");
+
+  return images;
 }
 
 HTMLCollection* Document::applets() {
-  return EnsureCachedCollection<HTMLCollection>(kDocApplets);
+  auto* collection = EnsureCachedCollection<HTMLCollection>(kDocApplets);
+  ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+  ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "applets");
+  return collection;
 }
 
 HTMLCollection* Document::embeds() {
-  return EnsureCachedCollection<HTMLCollection>(kDocEmbeds);
+    auto* collection = EnsureCachedCollection<HTMLCollection>(kDocEmbeds);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "embeds");
+    return collection;
 }
 
 HTMLCollection* Document::scripts() {
-  return EnsureCachedCollection<HTMLCollection>(kDocScripts);
+    auto* collection = EnsureCachedCollection<HTMLCollection>(kDocScripts);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "scripts");
+    return collection;
 }
 
 HTMLCollection* Document::links() {
-  return EnsureCachedCollection<HTMLCollection>(kDocLinks);
+    auto* collection = EnsureCachedCollection<HTMLCollection>(kDocLinks);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "links");
+    return collection;
 }
 
 HTMLCollection* Document::forms() {
-  return EnsureCachedCollection<HTMLCollection>(kDocForms);
+    auto* collection = EnsureCachedCollection<HTMLCollection>(kDocForms);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "forms");
+    return collection;
 }
 
 HTMLCollection* Document::anchors() {
-  return EnsureCachedCollection<HTMLCollection>(kDocAnchors);
+    auto* collection = EnsureCachedCollection<HTMLCollection>(kDocAnchors);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "anchors");
+    return collection;
 }
 
 HTMLAllCollection* Document::all() {
-  return EnsureCachedCollection<HTMLAllCollection>(kDocAll);
+    auto* collection = EnsureCachedCollection<HTMLAllCollection>(kDocAll);
+    ExecutionContext* context = ContainerNode::GetDocument().GetExecutionContext();
+    ConsoleMessage::ConsoleLogDOMAccessType3(context, collection, "all");
+    return collection;
 }
+
+// HTMLCollection* Document::applets() {
+
+//   return EnsureCachedCollection<HTMLCollection>(kDocApplets);
+// }
+
+// HTMLCollection* Document::embeds() {
+//   return EnsureCachedCollection<HTMLCollection>(kDocEmbeds);
+// }
+
+// HTMLCollection* Document::scripts() {
+//   return EnsureCachedCollection<HTMLCollection>(kDocScripts);
+// }
+
+// HTMLCollection* Document::links() {
+//   return EnsureCachedCollection<HTMLCollection>(kDocLinks);
+// }
+
+// HTMLCollection* Document::forms() {
+//   return EnsureCachedCollection<HTMLCollection>(kDocForms);
+// }
+
+// HTMLCollection* Document::anchors() {
+//   return EnsureCachedCollection<HTMLCollection>(kDocAnchors);
+// }
+
+// HTMLAllCollection* Document::all() {
+//   return EnsureCachedCollection<HTMLAllCollection>(kDocAll);
+// }
+
 
 HTMLCollection* Document::WindowNamedItems(const AtomicString& name) {
   return EnsureCachedCollection<WindowNameCollection>(kWindowNamedItems, name);

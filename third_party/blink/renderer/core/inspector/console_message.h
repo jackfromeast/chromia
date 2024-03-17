@@ -14,6 +14,8 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
+#include "third_party/blink/renderer/core/html/html_collection.h"
+
 namespace blink {
 
 class DocumentLoader;
@@ -48,6 +50,10 @@ class CORE_EXPORT ConsoleMessage final
                  std::unique_ptr<SourceLocation> source_location =
                      CaptureSourceLocation());
   ~ConsoleMessage();
+
+  static void ConsoleLogDOMAccess(ExecutionContext* context, String message);
+  static void ConsoleLogDOMAccessType3(ExecutionContext* context, HTMLCollection* collection, const String& collectionName);
+
 
   SourceLocation* Location() const;
   const String& RequestIdentifier() const;

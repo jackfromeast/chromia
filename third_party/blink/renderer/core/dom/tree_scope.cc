@@ -59,6 +59,12 @@
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #include "ui/gfx/geometry/point_conversions.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
+
 namespace blink {
 
 TreeScope::TreeScope(ContainerNode& root_node,
@@ -136,7 +142,24 @@ Element* TreeScope::getElementById(const AtomicString& element_id) const {
     return nullptr;
   if (!elements_by_id_)
     return nullptr;
-  return elements_by_id_->GetElementById(element_id, *this);
+  
+  Element* element = elements_by_id_->GetElementById(element_id, *this);
+  
+  // chrome-clobber
+  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+    ExecutionContext* execution_context = GetDocument().GetExecutionContext();
+    if (element) {
+      String message = "[+] SafeLookup: <API-TYPE-1> <getElementById> Catched Non-Undefined: " + String(element_id.Utf8().c_str());
+
+      ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+    }else{
+      String message = "[+] SafeLookup: <API-TYPE-1> <getElementById> Catched Undefined: " + String(element_id.Utf8().c_str());
+
+      ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+    }
+  }
+
+  return element;
 }
 
 const HeapVector<Member<Element>>& TreeScope::GetAllElementsById(

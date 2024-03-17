@@ -201,6 +201,10 @@
 
   data: [
     {
+      name: "RecordDOMClobberingSitesAny",
+      status: "experimental",
+    },
+    {
       name: "AbortSignalAny",
       status: "stable",
       depends_on: ["AbortSignalComposition"]
