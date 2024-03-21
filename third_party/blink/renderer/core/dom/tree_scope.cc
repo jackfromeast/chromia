@@ -146,7 +146,7 @@ Element* TreeScope::getElementById(const AtomicString& element_id) const {
   Element* element = elements_by_id_->GetElementById(element_id, *this);
   
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element) {
       String message = "[+] SafeLookup: <API-TYPE-1> <getElementById> Catched Non-Undefined: " + String(element_id.Utf8().c_str());

@@ -230,7 +230,7 @@ WebElement WebDocument::GetElementById(const WebString& id) const {
    * chrome-clobber
   */
   ExecutionContext* execution_context = ConstUnwrap<Document>()->GetExecutionContext();
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     String message = "[+] SafeLookup: <API-TYPE-1> Catched: " + String(id.Utf8().c_str());
 
     execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(

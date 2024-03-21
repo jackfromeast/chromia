@@ -94,7 +94,7 @@ void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String messa
 
 // Helper method to log chrome-clobber status.
 void ConsoleMessage::ConsoleLogDOMAccessType3(ExecutionContext* context, HTMLCollection* collection, const String& collectionName) {
-    if (!RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+    if (!RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
         return;
     }
 

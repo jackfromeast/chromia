@@ -1244,7 +1244,7 @@ Element* ContainerNode::querySelector(const AtomicString& selectors,
   Element* element = QuerySelector(selectors, exception_state);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element) {
       String message = "[+] SafeLookup: <API-TYPE-2> <querySelector> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1267,7 +1267,7 @@ StaticElementList* ContainerNode::querySelectorAll(
   StaticElementList* element = QuerySelectorAll(selectors, exception_state);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element->length() > 0) {
       String message = "[+] SafeLookup: <API-TYPE-1> <querySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1300,7 +1300,7 @@ Element* ContainerNode::QuerySelector(const AtomicString& selectors,
   Element* element = selector_query->QueryFirst(*this);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element) {
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelector> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1320,7 +1320,7 @@ Element* ContainerNode::QuerySelector(const AtomicString& selectors) {
   Element* element = QuerySelector(selectors, ASSERT_NO_EXCEPTION);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element) {
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelector> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1347,7 +1347,7 @@ StaticElementList* ContainerNode::QuerySelectorAll(
   StaticElementList* element = selector_query->QueryAll(*this);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element->length() > 0) {
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1369,7 +1369,7 @@ StaticElementList* ContainerNode::QuerySelectorAll(
   StaticElementList* element = QuerySelectorAll(selectors, ASSERT_NO_EXCEPTION);
 
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (element->length() > 0){
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
@@ -1644,7 +1644,7 @@ HTMLCollection* ContainerNode::getElementsByTagName(
   }
   
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (!result->IsEmpty()) {
       String message = "[+] SafeLookup: <API-TYPE-1> <getElementsByTagName> Catched Non-Undefined: " + String(qualified_name.Utf8().c_str());
@@ -1669,7 +1669,7 @@ HTMLCollection* ContainerNode::getElementsByTagNameNS(
       local_name);
   
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (!result->IsEmpty()) {
       String message = "[+] SafeLookup: <API-TYPE-1> <getElementsByTagNameNS> Catched Non-Undefined: " + String(local_name.Utf8().c_str());
@@ -1694,7 +1694,7 @@ NodeList* ContainerNode::getElementsByName(const AtomicString& element_name) {
       kNameNodeListType, element_name);
   
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (!result->IsEmptyNodeList()) {
       String message = "[+] SafeLookup: <API-TYPE-1> <getElementsByName> Catched Non-Undefined: " + String(element_name.Utf8().c_str());
@@ -1720,7 +1720,7 @@ HTMLCollection* ContainerNode::getElementsByClassName(
   HTMLCollection* result = EnsureCachedCollection<ClassCollection>(kClassCollectionType,
                                                  class_names);
   // chrome-clobber
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
     if (!result->IsEmpty()) {
       String message = "[+] SafeLookup: <API-TYPE-1> <getElementsByClassName> Catched Non-Undefined: " + String(class_names.Utf8().c_str());
@@ -1750,7 +1750,7 @@ Element* ContainerNode::getElementById(const AtomicString& id) const {
    * chrome-clobber
   */
   ExecutionContext* execution_context = GetExecutionContext();
-  if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
+  if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     String message = "[+] SafeLookup: <API-TYPE-2> <getElementById> Catched: " + String(id.Utf8().c_str());
 
     ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);

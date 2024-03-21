@@ -205,6 +205,10 @@
       status: "experimental",
     },
     {
+      name: "RecordDOMAccessAPIAny",
+      status: "experimental",
+    },
+    {
       name: "AbortSignalAny",
       status: "stable",
       depends_on: ["AbortSignalComposition"]
