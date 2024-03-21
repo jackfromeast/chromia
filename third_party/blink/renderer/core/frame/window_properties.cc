@@ -125,7 +125,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
      * <WIN-TYPE-1>, <DOC-TYPE-1>
     */
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
-      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-1> Catched: " + String(name.Utf8().c_str());
+      String message = "[+] SafeLookup: <WIN-TYPE-1> Catched: " + String(name.Utf8().c_str());
 
       execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
         mojom::blink::ConsoleMessageSource::kJavaScript,
@@ -151,11 +151,11 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     /**
      * SafeLookup
      * 
-     * <WIN-TYPE-2>, <DOC-TYPE-2>
+     * <WIN-TYPE-2>
      *
     */
    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
-      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
+      String message = "[+] SafeLookup: <WIN-TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
 
       execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
         mojom::blink::ConsoleMessageSource::kJavaScript,
@@ -174,12 +174,12 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     /**
      * SafeLookup
      * 
-     * <WIN-TYPE-2>, <DOC-TYPE-2>
+     * <WIN-TYPE-2>
      * 
      * TODO: should log the secondary clobberable site (clobber name) here
     */
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
-      String message = "[+] SafeLookup: <DOM-Clobbering> <TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
+      String message = "[+] SafeLookup: <WIN-TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
 
       execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
         mojom::blink::ConsoleMessageSource::kJavaScript,
