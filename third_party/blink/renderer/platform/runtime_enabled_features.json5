@@ -205,6 +205,14 @@
       status: "experimental",
     },
     {
+      name: "BlockDOMClobberingSitesAny",
+      status: "experimental",
+    },
+    {
+      name: "BlockDOMAccessAPIAny",
+      status: "experimental",
+    },
+    {
       name: "RecordDOMAccessAPIAny",
       status: "experimental",
     },

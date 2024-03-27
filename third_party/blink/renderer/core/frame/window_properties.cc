@@ -165,6 +165,9 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
    }
     // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (ID) Catched:" << name.Utf8() <<std::endl;
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);
+    if(RuntimeEnabledFeatures::BlockDOMClobberingSitesAnyEnabled()) {
+      return v8::Local<v8::Value>();
+    }
     return ToV8Traits<Element>::ToV8(script_state, doc->getElementById(name))
         .ToLocalChecked();
   }
@@ -193,6 +196,10 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     // TODO(esprehn): Firefox doesn't return an HTMLCollection here if there's
     // multiple with the same name, but Chrome and Safari does. What's the
     // right behavior?
+    if(RuntimeEnabledFeatures::BlockDOMClobberingSitesAnyEnabled()) {
+      return v8::Local<v8::Value>();
+    }
+
     if (items->HasExactlyOneItem()) {
       return ToV8Traits<Element>::ToV8(script_state, items->item(0))
           .ToLocalChecked();
