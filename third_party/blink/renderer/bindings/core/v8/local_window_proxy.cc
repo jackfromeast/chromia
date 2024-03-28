@@ -480,11 +480,6 @@ static v8::Local<v8::Value> GetNamedProperty(
       ScriptState::From(creation_context->GetCreationContextChecked());
   ExecutionContext* execution_context = ExecutionContext::From(script_state);
 
-  execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
-    mojom::blink::ConsoleMessageLevel::kInfo, 
-    message1,
-    CaptureSourceLocation(execution_context)));
-
   if (!html_document->HasNamedItem(key)){
     /**
      * SafeLookup

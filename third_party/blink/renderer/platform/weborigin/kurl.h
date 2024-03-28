@@ -160,6 +160,7 @@ class PLATFORM_EXPORT KURL {
   // Returns true if the current URL's protocol is the same as the StringView
   // argument. The argument must be lower-case.
   bool ProtocolIs(const StringView protocol) const;
+  bool ProtocolIsDevTools() const { return ProtocolIs("devtools"); }
   bool ProtocolIsData() const { return ProtocolIs("data"); }
   // This includes at least about:blank and about:srcdoc.
   bool ProtocolIsAbout() const { return ProtocolIs("about"); }

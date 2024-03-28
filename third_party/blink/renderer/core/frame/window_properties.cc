@@ -127,7 +127,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-1> Catched: " + String(name.Utf8().c_str());
 
-      if (!context->IsDevTools()) {
+      if (!execution_context->Url().ProtocolIsDevTools()) {
         execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
           mojom::blink::ConsoleMessageSource::kJavaScript,
           mojom::blink::ConsoleMessageLevel::kInfo, 
@@ -158,7 +158,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     */
    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
-      if (!context->IsDevTools()) {
+      if (!execution_context->Url().ProtocolIsDevTools()) {
         execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
           mojom::blink::ConsoleMessageSource::kJavaScript,
           mojom::blink::ConsoleMessageLevel::kInfo, 
@@ -183,7 +183,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     */
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
-      if (!context->IsDevTools()) {
+      if (!execution_context->Url().ProtocolIsDevTools()) {
         execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
           mojom::blink::ConsoleMessageSource::kJavaScript,
           mojom::blink::ConsoleMessageLevel::kInfo, 

@@ -86,7 +86,7 @@ SourceLocation* ConsoleMessage::Location() const {
 
 void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String message){
   // Do not log source from devtools.
-  if (context->IsDevTools()) {
+  if (context->Url().ProtocolIsDevTools()) {
     return;
   }
 
@@ -103,7 +103,7 @@ void ConsoleMessage::ConsoleLogDOMAccessType3(ExecutionContext* context, HTMLCol
         return;
     }
 
-    if (context->IsDevTools()) {
+    if (context->Url().ProtocolIsDevTools()) {
       return;
     }
 
