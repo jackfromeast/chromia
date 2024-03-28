@@ -480,7 +480,6 @@ static v8::Local<v8::Value> GetNamedProperty(
       ScriptState::From(creation_context->GetCreationContextChecked());
   ExecutionContext* execution_context = ExecutionContext::From(script_state);
 
-  String message1 = "[+] Here!!! " + key.GetString();
   execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
     mojom::blink::ConsoleMessageLevel::kInfo, 
     message1,

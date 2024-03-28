@@ -127,11 +127,13 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-1> Catched: " + String(name.Utf8().c_str());
 
-      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-        mojom::blink::ConsoleMessageSource::kJavaScript,
-        mojom::blink::ConsoleMessageLevel::kInfo, 
-        message,
-        CaptureSourceLocation(execution_context)));
+      if (!context->IsDevTools()) {
+        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+          mojom::blink::ConsoleMessageSource::kJavaScript,
+          mojom::blink::ConsoleMessageLevel::kInfo, 
+          message,
+          CaptureSourceLocation(execution_context)));
+      }
     }
     return v8::Local<v8::Value>();
   }
@@ -156,12 +158,13 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     */
    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
-
-      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-        mojom::blink::ConsoleMessageSource::kJavaScript,
-        mojom::blink::ConsoleMessageLevel::kInfo, 
-        message,
-        CaptureSourceLocation(execution_context)));
+      if (!context->IsDevTools()) {
+        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+          mojom::blink::ConsoleMessageSource::kJavaScript,
+          mojom::blink::ConsoleMessageLevel::kInfo, 
+          message,
+          CaptureSourceLocation(execution_context)));
+      }
    }
     // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (ID) Catched:" << name.Utf8() <<std::endl;
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);
@@ -180,12 +183,13 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     */
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
-
-      execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-        mojom::blink::ConsoleMessageSource::kJavaScript,
-        mojom::blink::ConsoleMessageLevel::kInfo, 
-        message,
-        CaptureSourceLocation(execution_context)));
+      if (!context->IsDevTools()) {
+        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+          mojom::blink::ConsoleMessageSource::kJavaScript,
+          mojom::blink::ConsoleMessageLevel::kInfo, 
+          message,
+          CaptureSourceLocation(execution_context)));
+      }
     }
     // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (Name) Catched:" << name.Utf8() <<std::endl;
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);

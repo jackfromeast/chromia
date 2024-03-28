@@ -85,6 +85,11 @@ SourceLocation* ConsoleMessage::Location() const {
 }
 
 void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String message){
+  // Do not log source from devtools.
+  if (context->IsDevTools()) {
+    return;
+  }
+
   context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
     mojom::blink::ConsoleMessageSource::kJavaScript,
     mojom::blink::ConsoleMessageLevel::kInfo, 
@@ -96,6 +101,10 @@ void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String messa
 void ConsoleMessage::ConsoleLogDOMAccessType3(ExecutionContext* context, HTMLCollection* collection, const String& collectionName) {
     if (!RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
         return;
+    }
+
+    if (context->IsDevTools()) {
+      return;
     }
 
     String status = collection->IsEmpty() ? "Catched Undefined" : "Catched Non-Undefined";
