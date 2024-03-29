@@ -1269,7 +1269,10 @@ StaticElementList* ContainerNode::querySelectorAll(
   // chrome-clobber
   if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
-    if (element->length() > 0) {
+    String debug_msg = "Debug: " + String(selectors.Utf8().c_str());
+
+    ConsoleMessage::ConsoleLogDOMAccess(execution_context, debug_msg);
+    if (element && element->length() > 0) {
       String message = "[+] SafeLookup: <API-TYPE-1> <querySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
 
       ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
@@ -1349,7 +1352,7 @@ StaticElementList* ContainerNode::QuerySelectorAll(
   // chrome-clobber
   if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
-    if (element->length() > 0) {
+    if (element && element->length() > 0) {
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
 
       ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
@@ -1371,7 +1374,7 @@ StaticElementList* ContainerNode::QuerySelectorAll(
   // chrome-clobber
   if(RuntimeEnabledFeatures::RecordDOMAccessAPIAnyEnabled()) {
     ExecutionContext* execution_context = GetDocument().GetExecutionContext();
-    if (element->length() > 0){
+    if (element && element->length() > 0){
       String message = "[+] SafeLookup: <API-TYPE-2> <QuerySelectorAll> Catched Non-Undefined: " + String(selectors.Utf8().c_str());
 
       ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
