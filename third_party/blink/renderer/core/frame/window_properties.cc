@@ -128,11 +128,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
       String message = "[+] SafeLookup: <WIN-TYPE-1> Catched: " + String(name.Utf8().c_str());
 
       if (!execution_context->Url().ProtocolIsDevTools()) {
-        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-          mojom::blink::ConsoleMessageSource::kJavaScript,
-          mojom::blink::ConsoleMessageLevel::kInfo, 
-          message,
-          CaptureSourceLocation(execution_context)));
+        ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
       }
     }
     return v8::Local<v8::Value>();
@@ -159,11 +155,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
    if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-ID> Catched: " + String(name.Utf8().c_str());
       if (!execution_context->Url().ProtocolIsDevTools()) {
-        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-          mojom::blink::ConsoleMessageSource::kJavaScript,
-          mojom::blink::ConsoleMessageLevel::kInfo, 
-          message,
-          CaptureSourceLocation(execution_context)));
+        ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
       }
    }
     // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (ID) Catched:" << name.Utf8() <<std::endl;
@@ -184,11 +176,7 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
     if(RuntimeEnabledFeatures::RecordDOMClobberingSitesAnyEnabled()) {
       String message = "[+] SafeLookup: <WIN-TYPE-2-Name> Catched: " + String(name.Utf8().c_str());
       if (!execution_context->Url().ProtocolIsDevTools()) {
-        execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
-          mojom::blink::ConsoleMessageSource::kJavaScript,
-          mojom::blink::ConsoleMessageLevel::kInfo, 
-          message,
-          CaptureSourceLocation(execution_context)));
+        ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
       }
     }
     // std::cout << "[+] SafeLookup: <WIN-TYPE-2>, <DOC-TYPE-2> (Name) Catched:" << name.Utf8() <<std::endl;

@@ -486,11 +486,11 @@ static v8::Local<v8::Value> GetNamedProperty(
      * 
      * <DOC-TYPE-1>
     */
-    String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-1> Catched (Not Found): " + key.GetString();
-    execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
-     mojom::blink::ConsoleMessageLevel::kInfo, 
-     message,
-     CaptureSourceLocation(execution_context)));
+    // String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-1> Catched (Not Found): " + key.GetString();
+    // execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
+    //  mojom::blink::ConsoleMessageLevel::kInfo, 
+    //  message,
+    //  CaptureSourceLocation(execution_context)));
 
    return v8::Local<v8::Value>();
   }
@@ -503,11 +503,11 @@ static v8::Local<v8::Value> GetNamedProperty(
      * 
      * <DOC-TYPE-1>
     */
-    String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-1> Catched (Empty): " + key.GetString();
-    execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
-     mojom::blink::ConsoleMessageLevel::kInfo, 
-     message,
-     CaptureSourceLocation(execution_context)));
+    // String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-1> Catched (Empty): " + key.GetString();
+    // execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
+    //  mojom::blink::ConsoleMessageLevel::kInfo, 
+    //  message,
+    //  CaptureSourceLocation(execution_context)));
     return v8::Local<v8::Value>();
   }
 
@@ -516,11 +516,11 @@ static v8::Local<v8::Value> GetNamedProperty(
      * 
      * <DOC-TYPE-1>
     */
-    String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-2> <DOC-TYPE-3> Catched (NoEmpty): " + key.GetString();
-    execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
-     mojom::blink::ConsoleMessageLevel::kInfo, 
-     message,
-     CaptureSourceLocation(execution_context)));
+    // String message = "[+] SafeLookup: <DOM-Clobbering> <DOC-TYPE-2> <DOC-TYPE-3> Catched (NoEmpty): " + key.GetString();
+    // execution_context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(mojom::blink::ConsoleMessageSource::kJavaScript,
+    //  mojom::blink::ConsoleMessageLevel::kInfo, 
+    //  message,
+    //  CaptureSourceLocation(execution_context)));
 
   if (items->HasExactlyOneItem()) {
     HTMLElement* element = items->Item(0);
