@@ -476,9 +476,9 @@ static v8::Local<v8::Value> GetNamedProperty(
   /**
    * SafeLookup
   */
-  ScriptState* script_state =
-      ScriptState::From(creation_context->GetCreationContextChecked());
-  ExecutionContext* execution_context = ExecutionContext::From(script_state);
+  // ScriptState* script_state =
+  //     ScriptState::From(creation_context->GetCreationContextChecked());
+  // ExecutionContext* execution_context = ExecutionContext::From(script_state);
 
   if (!html_document->HasNamedItem(key)){
     /**

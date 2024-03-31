@@ -90,15 +90,17 @@ void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String messa
     return;
   }
 
-  auto source_location = CaptureSourceLocation(context);
-  String location = "Location: " + source_location->Url() << ':' << LineNumber << ':' << ColumnNumber;
-  message = message + " " + location;
+  std::unique_ptr<SourceLocation> source_location = CaptureSourceLocation(context);
+  String location = ", Location: " + source_location->Url() + ":" + 
+                  String::Number(source_location->LineNumber()) + ":" + 
+                  String::Number(source_location->ColumnNumber());
+  message = message + location;
 
   context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
     mojom::blink::ConsoleMessageSource::kJavaScript,
     mojom::blink::ConsoleMessageLevel::kInfo, 
     message,
-    source_location));
+    std::move(source_location)));
 }
 
 // Helper method to log chrome-clobber status.
