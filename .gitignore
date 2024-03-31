@@ -1,4 +1,5 @@
 /client-py/
+tmp
 *.bak
 *.code-workspace
 *.gstmp
