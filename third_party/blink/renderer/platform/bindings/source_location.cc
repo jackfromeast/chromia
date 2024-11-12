@@ -12,6 +12,7 @@
 #include "third_party/blink/renderer/platform/bindings/thread_debugger.h"
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
 #include "third_party/blink/renderer/platform/bindings/v8_binding_macros.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/traced_value.h"
 #include "third_party/perfetto/include/perfetto/tracing/traced_proto.h"
@@ -178,6 +179,25 @@ String SourceLocation::ToString() const {
   if (!stack_trace_)
     return String();
   return ToPlatformString(stack_trace_->toString());
+}
+
+const AtomicString SourceLocation::ToStringLookupIntegrity() const {
+  WTF::StringBuilder result;
+
+  if (!stack_trace_)
+    result.Append("FromHTML");
+  else {
+    // URL:LineNumber:ColumnNumber:FunctionName
+    result.Append(url_);
+    result.Append(":");
+    result.Append(String::Number(line_number_));
+    result.Append(":");
+    result.Append(String::Number(column_number_));
+    result.Append(":");
+    result.Append(function_);
+  }
+  
+  return AtomicString(result.ToString());
 }
 
 std::unique_ptr<v8_inspector::protocol::Runtime::API::StackTrace>

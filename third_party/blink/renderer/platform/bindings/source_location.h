@@ -83,6 +83,7 @@ class PLATFORM_EXPORT SourceLocation {
 
   // Could be null string when stack trace is unknown.
   String ToString() const;
+  const AtomicString ToStringLookupIntegrity() const;
 
   // Could be null when stack trace is unknown.
   std::unique_ptr<v8_inspector::protocol::Runtime::API::StackTrace>

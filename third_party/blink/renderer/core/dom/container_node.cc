@@ -70,6 +70,7 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/runtime_call_stats.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+#include "third_party/blink/renderer/platform/bindings/source_location.h"
 #include "third_party/blink/renderer/platform/instrumentation/use_counter.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
@@ -439,6 +440,17 @@ Node* ContainerNode::InsertBefore(Node* new_child,
     InsertNodeVector(targets, ref_child, AdoptAndInsertBefore(),
                      &post_insertion_notification_targets);
   }
+
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
   DidInsertNodeVector(targets, ref_child, post_insertion_notification_targets);
   return new_child;
 }
@@ -540,6 +552,16 @@ void ContainerNode::ParserInsertBefore(Node* new_child, Node& next_child) {
     ChildListMutationScope(*this).ChildAdded(*new_child);
   }
 
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
   NotifyNodeInserted(*new_child, ChildrenChangeSource::kParser);
 }
 
@@ -634,6 +656,17 @@ Node* ContainerNode::ReplaceChild(Node* new_child,
                        &post_insertion_notification_targets);
     }
   }
+
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
   DidInsertNodeVector(targets, next, post_insertion_notification_targets);
 
   // 16. Return child.
@@ -947,11 +980,23 @@ Node* ContainerNode::AppendChild(Node* new_child,
     InsertNodeVector(targets, nullptr, AdoptAndAppendChild(),
                      &post_insertion_notification_targets);
   }
+  
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
+
   DidInsertNodeVector(targets, nullptr, post_insertion_notification_targets);
   return new_child;
 }
 
-Node* ContainerNode::AppendChild(Node* new_child) {
+  Node* ContainerNode::AppendChild(Node* new_child) {
   return AppendChild(new_child, ASSERT_NO_EXCEPTION);
 }
 
@@ -984,6 +1029,16 @@ void ContainerNode::ParserAppendChild(Node* new_child) {
     ChildListMutationScope(*this).ChildAdded(*new_child);
   }
 
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
   NotifyNodeInserted(*new_child, ChildrenChangeSource::kParser);
 }
 
@@ -1002,6 +1057,17 @@ void ContainerNode::ParserAppendChildInDocumentFragment(Node* new_child) {
   // TODO(sky): This has to happen for every add. It seems like it should be
   // better factored.
   ChildListMutationScope(*this).ChildAdded(*new_child);
+
+  // Lookup Integrity
+  // 1. If the node is a HTMLElement, which can be set a attribute
+  // 2. Retrive the current source code location
+  // 3. Convert the source code location to a string and assigned it to the attribute
+  // TODO: Use a flag to control the behavior
+  if (new_child->IsHTMLElement()) {
+    HTMLElement* element = To<HTMLElement>(new_child);
+    element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
+  }
+
   probe::DidInsertDOMNode(this);
 }
 
