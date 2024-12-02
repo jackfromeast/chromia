@@ -49,6 +49,8 @@ class CORE_EXPORT ConsoleMessage final
                      CaptureSourceLocation());
   ~ConsoleMessage();
 
+  static void ConsoleLogDOMAccess(ExecutionContext*, String message);
+
   SourceLocation* Location() const;
   const String& RequestIdentifier() const;
   double Timestamp() const;

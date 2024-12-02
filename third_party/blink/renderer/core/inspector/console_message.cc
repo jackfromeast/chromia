@@ -16,6 +16,10 @@
 
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
 namespace blink {
 
 ConsoleMessage::ConsoleMessage(mojom::blink::ConsoleMessageSource source,
@@ -78,6 +82,14 @@ ConsoleMessage::~ConsoleMessage() = default;
 
 SourceLocation* ConsoleMessage::Location() const {
   return location_.get();
+}
+
+void ConsoleMessage::ConsoleLogDOMAccess(ExecutionContext* context, String message){
+  context->AddConsoleMessage(MakeGarbageCollected<ConsoleMessage>(
+    mojom::blink::ConsoleMessageSource::kJavaScript,
+    mojom::blink::ConsoleMessageLevel::kInfo, 
+    message,
+    CaptureSourceLocation(context)));
 }
 
 const String& ConsoleMessage::RequestIdentifier() const {
