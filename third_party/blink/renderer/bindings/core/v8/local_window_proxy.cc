@@ -75,6 +75,12 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_operators.h"
 #include "v8/include/v8.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
+
 namespace blink {
 
 void LocalWindowProxy::Trace(Visitor* visitor) const {
@@ -473,6 +479,19 @@ static v8::Local<v8::Value> GetNamedProperty(
   if (items->HasExactlyOneItem()) {
     HTMLElement* element = items->Item(0);
     DCHECK(element);
+
+    // Lookup Integrity
+    // Legitimate access of named property lookup on document
+    ScriptState* script_state =
+        ScriptState::From(creation_context->GetCreationContextChecked());
+    ExecutionContext* execution_context = ExecutionContext::From(script_state);
+    if (execution_context) {
+      if (element->hasAttribute(QualifiedName(AtomicString("loki-append-loc")))) {
+        String message = "[+] Loki: <DOM-TYPE-2> <Signture-Append-Location>: " + element->getAttribute(QualifiedName(AtomicString("loki-append-loc"))).GetString() + " <Access-Location>: " + CaptureSourceLocation()->ToStringLookupIntegrity().GetString();
+        ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+      }
+    }
+
     if (auto* iframe = DynamicTo<HTMLIFrameElement>(*element)) {
       if (Frame* frame = iframe->ContentFrame())
         return ToV8(frame->DomWindow(), creation_context, isolate);

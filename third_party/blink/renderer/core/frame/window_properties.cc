@@ -15,6 +15,11 @@
 #include "third_party/blink/renderer/core/html/html_collection.h"
 #include "third_party/blink/renderer/core/html/html_document.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+#include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/bindings/core/v8/generated_code_helper.h"
+
 namespace blink {
 
 v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
@@ -118,6 +123,19 @@ v8::Local<v8::Value> WindowProperties::AnonymousNamedGetter(
                                             DOMWrapperWorld::Current(isolate));
   if (!has_named_item && has_id_item &&
       !doc->ContainsMultipleElementsWithId(name)) {
+    
+    Element* element = doc->getElementById(name);
+    
+    // Lookup Integrity
+    // Legitimate access of named property lookup on document
+    ExecutionContext* execution_context = ExecutionContext::From(script_state);
+    if (execution_context) {
+      if (element->hasAttribute(QualifiedName(AtomicString("loki-append-loc")))) {
+        String message = "[+] Loki: <WIN-TYPE-2> <Signture-Append-Location>: " + element->getAttribute(QualifiedName(AtomicString("loki-append-loc"))).GetString() + " <Access-Location>: " + CaptureSourceLocation()->ToStringLookupIntegrity().GetString();
+        ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+      }
+    }
+
     UseCounter::Count(doc, WebFeature::kDOMClobberedVariableAccessed);
     return ToV8Traits<Element>::ToV8(script_state, doc->getElementById(name))
         .ToLocalChecked();
