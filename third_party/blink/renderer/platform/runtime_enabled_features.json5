@@ -201,6 +201,14 @@
 
   data: [
     {
+      name: "RecordDOMAccessAPIAny",
+      status: "experimental",
+    },
+    {
+      name: "RecordAppendLocAny",
+      status: "experimental",
+    },
+    {
       name: "AbortSignalAny",
       status: "stable",
       depends_on: ["AbortSignalComposition"]

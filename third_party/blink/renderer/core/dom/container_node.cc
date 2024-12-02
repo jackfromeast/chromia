@@ -446,7 +446,7 @@ Node* ContainerNode::InsertBefore(Node* new_child,
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -557,7 +557,7 @@ void ContainerNode::ParserInsertBefore(Node* new_child, Node& next_child) {
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -662,7 +662,7 @@ Node* ContainerNode::ReplaceChild(Node* new_child,
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -986,7 +986,7 @@ Node* ContainerNode::AppendChild(Node* new_child,
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -1034,7 +1034,7 @@ void ContainerNode::ParserAppendChild(Node* new_child) {
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -1063,7 +1063,7 @@ void ContainerNode::ParserAppendChildInDocumentFragment(Node* new_child) {
   // 2. Retrive the current source code location
   // 3. Convert the source code location to a string and assigned it to the attribute
   // TODO: Use a flag to control the behavior
-  if (new_child->IsHTMLElement()) {
+  if (RuntimeEnabledFeatures::RecordAppendLocAnyEnabled() && new_child->IsHTMLElement()) {
     HTMLElement* element = To<HTMLElement>(new_child);
     element->SetSynchronizedLazyAttribute(QualifiedName(AtomicString("loki-append-loc")), CaptureSourceLocation()->ToStringLookupIntegrity());
   }
@@ -1325,7 +1325,20 @@ Element* ContainerNode::QuerySelector(const AtomicString& selectors,
       selectors, GetDocument(), exception_state);
   if (!selector_query)
     return nullptr;
-  return selector_query->QueryFirst(*this);
+  
+  Element* result = selector_query->QueryFirst(*this);
+
+  // Lookup Integrity
+  // Legitimate access of named property lookup on document
+  ExecutionContext* execution_context = GetDocument().GetExecutionContext()
+  if (execution_context) {
+    if (result->hasAttribute(QualifiedName(AtomicString("loki-append-loc")))) {
+      String message = "[+] Loki: <API-TYPE-1-HTML> <Signture-Append-Location>: " + result->getAttribute(QualifiedName(AtomicString("loki-append-loc"))).GetString() + " <Access-Location>: " + CaptureSourceLocation()->ToStringLookupIntegrity().GetString();
+      ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+    }
+  }
+
+  return result;
 }
 
 Element* ContainerNode::QuerySelector(const AtomicString& selectors) {
