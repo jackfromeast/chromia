@@ -75,6 +75,9 @@
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
+#include "third_party/blink/renderer/core/inspector/console_message.h"
+
+
 namespace blink {
 
 static void DispatchChildInsertionEvents(Node&);
@@ -1330,13 +1333,13 @@ Element* ContainerNode::QuerySelector(const AtomicString& selectors,
 
   // Lookup Integrity
   // Legitimate access of named property lookup on document
-  ExecutionContext* execution_context = GetDocument().GetExecutionContext()
-  if (execution_context) {
-    if (result->hasAttribute(QualifiedName(AtomicString("loki-append-loc")))) {
-      String message = "[+] Loki: <API-TYPE-1-HTML> <Signture-Append-Location>: " + result->getAttribute(QualifiedName(AtomicString("loki-append-loc"))).GetString() + " <Access-Location>: " + CaptureSourceLocation()->ToStringLookupIntegrity().GetString();
-      ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
-    }
-  }
+  // ExecutionContext* execution_context = GetDocument().GetExecutionContext();
+  // if (execution_context) {
+  //   if (result->hasAttribute(QualifiedName(AtomicString("loki-append-loc")))) {
+  //     String message = "[+] Loki: <API-TYPE-1-HTML> <Signture-Append-Location>: " + result->getAttribute(QualifiedName(AtomicString("loki-append-loc"))).GetString() + " <Access-Location>: " + CaptureSourceLocation()->ToStringLookupIntegrity().GetString();
+  //     ConsoleMessage::ConsoleLogDOMAccess(execution_context, message);
+  //   }
+  // }
 
   return result;
 }
